@@ -26,16 +26,16 @@ class UserResource(val service: UserService){
     fun post(@RequestBody user: User) = service.post(user)
 }
 
-@RestController
-@RequestMapping("/api/role")
-class RoleResource(val service: RoleService){
-
-    @GetMapping("/")
-    fun get(): List<Role> = service.findRole()
-
-    @PostMapping
-    fun post(@RequestBody role: Role) = service.post(role)
-}
+//@RestController
+//@RequestMapping("/api/role")
+//class RoleResource(val service: RoleService){
+//
+//    @GetMapping("/")
+//    fun get(): List<Role> = service.findRole()
+//
+//    @PostMapping
+//    fun post(@RequestBody role: Role) = service.post(role)
+//}
 
 @Service
 class UserService(val db: UserRepository){
@@ -50,28 +50,28 @@ class UserService(val db: UserRepository){
 
 }
 
-@Service
-class RoleService(val db: RoleRepository){
-
-    fun findRole(): List<Role>{
-        return db.findRole()
-    }
-
-    fun post(role: Role){
-        db.save(role)
-    }
-
-}
+//@Service
+//class RoleService(val db: RoleRepository){
+//
+//    fun findRole(): List<Role>{
+//        return db.findRole()
+//    }
+//
+//    fun post(role: Role){
+//        db.save(role)
+//    }
+//
+//}
 
 interface UserRepository: CrudRepository<User, Integer> {
     @Query("select * from users")
     fun findUser(): List<User>
 }
 
-interface RoleRepository: CrudRepository<Role, Integer> {
-    @Query("select * from roles")
-    fun findRole(): List<Role>
-}
+//interface RoleRepository: CrudRepository<Role, Integer> {
+//    @Query("select * from roles")
+//    fun findRole(): List<Role>
+//}
 
 @Table("USERS")
 data class User(val id: Integer, val username: String, val email: String, val password: String, val roleid: Integer)
