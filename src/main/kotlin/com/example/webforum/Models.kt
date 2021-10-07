@@ -1,10 +1,11 @@
 package com.example.webforum
 
 import io.github.serpro69.kfaker.Faker
+import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
-@Table("USERS")
-data class User(val fullname: String, val email: String, val nickname: String, val id: Int, val about: String)
+@Table("users")
+data class User(val fullname: String, val email: String, val nickname: String, val about: String, @Id var id: Int? = null)
 
 @Table("forum_users")
 data class ForumUsers(val user_id: Int, val forum_id: Int)

@@ -2,11 +2,14 @@ package com.example.webforum
 
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Repository
+import org.springframework.data.repository.query.Param
 
 interface UserRepository : CrudRepository<User, Integer> {
     @Query("select * from users")
     fun selectAll(): List<User>
+
+    @Query("select * from users where nickname = :nickname")
+    fun getUserByNickname(@Param("nickname") nickname: String): User?
 }
 
 interface ForumUsersRepository : CrudRepository<ForumUsers, Int> {

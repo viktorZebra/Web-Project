@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  title: Forum
+  title: forum
   description: |
-    Лабораторные работы по курсу Основы разработки Web - приложений
+    Проект для лабораторных работ по курсу "Основы Web технологий"
   version: "0.1"
 schemes:
   - http
@@ -13,9 +13,9 @@ consumes:
 produces:
   - application/json
 paths:
-  /category/create:
+  /forum/create:
     post:
-      summary: Создание категории форума
+      summary: Создание форума
       description: |
         Создание нового форума.
       operationId: forumCreate
@@ -44,7 +44,7 @@ paths:
             Возвращает данные ранее созданного форума.
           schema:
             $ref: '#/definitions/Forum'
-  /category/{slug}/details:
+  /forum/{slug}/details:
     get:
       summary: Получение информации о форуме
       description: |
@@ -69,7 +69,7 @@ paths:
             Форум отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-  /category/{slug}/create:
+  /forum/{slug}/create:
     post:
       summary: Создание ветки
       description: |
@@ -106,7 +106,7 @@ paths:
             Возвращает данные ранее созданной ветки обсуждения.
           schema:
             $ref: '#/definitions/Thread'
-  /category/{slug}/users:
+  /forum/{slug}/users:
     get:
       summary: Пользователи данного форума
       description: |
@@ -153,7 +153,7 @@ paths:
             Форум отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-  /category/{slug}/posts:
+  /forum/{slug}/threads:
     get:
       summary: Список ветвей обсужления форума
       description: |

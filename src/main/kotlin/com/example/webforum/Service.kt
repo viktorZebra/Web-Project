@@ -8,13 +8,16 @@ import java.io.File
 
 
 @Service
-class UserService(val db: UserRepository){
+class UserService(val userRepository: UserRepository){
 
+    fun getUserByNickname(nick: String): User?{
+        return userRepository.getUserByNickname(nick)
+    }
     fun findUser(): List<User>{
-        return db.selectAll()
+        return userRepository.selectAll()
     }
 
-    fun post(user: User){
-        db.save(user)
+    fun create(user: User): Int?{
+        return userRepository.save(user).id
     }
 }
