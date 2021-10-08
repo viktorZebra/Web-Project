@@ -1,17 +1,14 @@
 package com.example.webforum
 
-import io.github.serpro69.kfaker.Faker
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
+import Exception.UserNotFoundException
 import org.springframework.stereotype.Service
-import java.io.File
 
 
 @Service
 class UserService(val userRepository: UserRepository){
 
-    fun getUserByNickname(nick: String): User?{
-        return userRepository.getUserByNickname(nick)
+    fun getUserByNickname(nick: String): User? {
+        return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException()
     }
     fun findUser(): List<User>{
         return userRepository.selectAll()
