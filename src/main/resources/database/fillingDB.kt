@@ -1,15 +1,14 @@
 package database
 
-import com.example.webforum.User
 import io.github.serpro69.kfaker.Faker
 import java.io.File
 
-fun main(){
+fun main() {
 
     fillTable("src/main/resources/usersDump.sql", genUsers())
 }
 
-fun fillTable(dumpFilepath: String, data: List<String>){
+fun fillTable(dumpFilepath: String, data: List<String>) {
     File(dumpFilepath).printWriter().use { out ->
         data.forEach {
             out.println(it)
@@ -17,7 +16,7 @@ fun fillTable(dumpFilepath: String, data: List<String>){
     }
 }
 
-fun genUsers(): ArrayList<String>{
+fun genUsers(): ArrayList<String> {
     val faker = Faker()
     val listUser: ArrayList<String> = arrayListOf()
     listUser.add("INSERT INTO users (fullname, email, nickname, id, about) VALUES")

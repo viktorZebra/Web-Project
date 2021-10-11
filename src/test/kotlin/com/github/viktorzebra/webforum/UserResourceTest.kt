@@ -1,4 +1,4 @@
-package com.example.webforum
+package com.github.viktorzebra.webforum
 
 import org.junit.jupiter.api.Test
 
