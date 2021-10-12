@@ -11,6 +11,9 @@ interface UserRepository : CrudRepository<UserModel, Integer> {
 
     @Query("select * from users where nickname = :nickname")
     fun getUserByNickname(@Param("nickname") nickname: String): UserModel?
+
+    @Query("select * from users where email = :email")
+    fun getUserByEmail(@Param("email") email: String): UserModel?
 }
 
 
