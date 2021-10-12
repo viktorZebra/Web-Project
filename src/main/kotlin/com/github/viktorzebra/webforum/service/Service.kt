@@ -20,9 +20,11 @@ class UserService(val userRepository: UserRepository){
     }
 
     fun updateProfile(user: UserModel, nickname: String) {
-        val currentUser = getUserByNickname(nickname) // проверяем существует ли данный профиль с nickname, чтобы изменить данные
 
-        // проверяем конфликт уже существующего профиля с эмэйлом
+        // проверяем существует ли данный профиль с nickname, чтобы изменить данные
+        val currentUser = getUserByNickname(nickname)
+
+        // проверяем конфликт уже существующего профиля с email
         if(!checkUserInDB(user)){
             currentUser.fullname = user.fullname
             currentUser.about = user.about
@@ -39,5 +41,4 @@ class UserService(val userRepository: UserRepository){
         else
             throw UserAlreadyCreatedException(checkUserByEmail)
     }
-
 }
