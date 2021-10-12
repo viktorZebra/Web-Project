@@ -12,6 +12,12 @@ interface UserRepository : CrudRepository<UserModel, Integer> {
     @Query("select * from users where nickname = :nickname")
     fun getUserByNickname(@Param("nickname") nickname: String): UserModel?
 
+    @Query("select COUNT(*) from users where email = :email")
+    fun isUserWithEmailExists(@Param("email") email: String): Int
+
+    @Query("select COUNT(*) from users where nickname = :nickname")
+    fun getCountUsersByNickname(@Param("nickname") nickname: String): Int
+
     @Query("select * from users where email = :email")
     fun getUserByEmail(@Param("email") email: String): UserModel?
 }

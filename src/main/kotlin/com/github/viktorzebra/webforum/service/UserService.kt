@@ -1,5 +1,6 @@
 package com.github.viktorzebra.webforum.service
 
+import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserNotFoundException
 import com.github.viktorzebra.webforum.model.UserModel
@@ -11,34 +12,46 @@ import org.springframework.stereotype.Service
 class UserService(val userRepository: UserRepository){
 
     fun getUserByNickname(nick: String): UserModel {
-        return userRepository.getUserByNickname(nick)  ?: throw UserNotFoundException("Can't find user")
+        return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException("Can't find user by nickname")
     }
 
-    fun create(user: UserModel){
-        if(!checkUserInDB(user))
-            userRepository.save(user)
+    fun getUserByEmail(email: String): UserModel {
+        return userRepository.getUserByNickname(email) ?: throw UserNotFoundException("Can't find user by email")
     }
 
-    fun updateProfile(user: UserModel, nickname: String) {
+    fun isUserWithEmailExists(email: String): Int {
+        return userRepository.isUserWithEmailExists(email)
+    }
 
-        // проверяем существует ли данный профиль с nickname, чтобы изменить данные
+    fun create(user: UserModel) {
+        checkUserExists(user.email, user.nickname!!)
+        userRepository.save(user)
+    }
+
+    fun updateProfile(newUser: UserModel, nickname: String) {
         val currentUser = getUserByNickname(nickname)
+        val userWithEmailForReplace = userRepository.getUserByEmail(newUser.email)
 
-        // проверяем конфликт уже существующего профиля с email
-        if(!checkUserInDB(user)){
-            currentUser.fullname = user.fullname
-            currentUser.about = user.about
-            currentUser.email = user.email
+        if (userWithEmailForReplace == null || currentUser.email == newUser.email) {
+            currentUser.fullname = newUser.fullname
+            currentUser.about = newUser.about
+            currentUser.email = newUser.email
+
             userRepository.save(currentUser)
+
+        } else {
+            throw UserAlreadyCreatedException(userWithEmailForReplace)
         }
     }
 
-    private fun checkUserInDB(user: UserModel): Boolean{
-        val checkUserByEmail = userRepository.getUserByEmail(user.email)
+    private fun checkUserExists(email: String, nickname: String) {
+        val existedUserByEmail = userRepository.getUserByEmail(email)
+        val existedUserByNickname = userRepository.getUserByNickname(nickname)
 
-        if(checkUserByEmail == null)
-            return false
-        else
-            throw UserAlreadyCreatedException(checkUserByEmail)
+        if (existedUserByEmail != null)
+            throw UserAlreadyCreatedException(existedUserByEmail)
+
+        if (existedUserByNickname != null)
+            throw UserAlreadyCreatedException(existedUserByNickname)
     }
 }
