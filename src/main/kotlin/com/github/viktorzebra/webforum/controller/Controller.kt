@@ -1,5 +1,6 @@
 package com.github.viktorzebra.webforum.controller
 
+import com.github.viktorzebra.webforum.exception.UserNotFoundException
 import com.github.viktorzebra.webforum.service.UserService
 import com.github.viktorzebra.webforum.model.UserModel
 import org.springframework.http.HttpStatus
@@ -12,14 +13,10 @@ import org.springframework.web.bind.annotation.*
 class UserResource(val userService: UserService){
 
     @GetMapping("/{nickname}/profile")
-    fun getUserProfile(@PathVariable nickname: String): ResponseEntity<Any?>?{
-        val user = userService.getUserByNickname(nickname)
+    fun getUserProfile(@PathVariable nickname: String): ResponseEntity<UserModel>{
+        val user = userService.getUserByNickname(nickname) ?: throw UserNotFoundException("Can't find user")
 
-        return if (user != null) {
-            ResponseEntity(user, HttpStatus.OK)
-        } else{
-            ResponseEntity("{\n \"message\": \"Can't find user with id #42\" \n}", HttpStatus.NOT_FOUND)
-        }
+        return ResponseEntity(user, HttpStatus.OK)
     }
 
 

@@ -1,5 +1,4 @@
 package com.github.viktorzebra.webforum.exception
 
-class UserNotFoundException : RuntimeException() {
-    // TODO
+class UserNotFoundException(message: String) : RuntimeException(message) {
 }

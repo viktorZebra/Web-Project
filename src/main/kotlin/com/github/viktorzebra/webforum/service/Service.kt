@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service
 class UserService(val userRepository: UserRepository){
 
     fun getUserByNickname(nick: String): UserModel? {
-        return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException()
+        return userRepository.getUserByNickname(nick)
     }
+
     fun findUser(): List<UserModel>{
         return userRepository.selectAll()
     }
