@@ -13,13 +13,19 @@ import org.springframework.stereotype.Service
 class ForumService(val forumRepository: ForumsRepository, val userRepository: UserRepository) {
 
     fun create(forum: ForumsModel) {
-        getUserByNickname(forum.user_nickname)
         checkForumExists(forum.slug)
-        forumRepository.save(forum)
+
+        if (isUserExists(forum.user_nickname))
+            forumRepository.save(forum)
     }
 
-    fun getUserByNickname(nick: String): UserModel {
-        return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException("Can't find user")
+    fun isUserExists(nick: String): Boolean {
+        if (userRepository.getCountUsersByNickname(nick) != 0)
+            return true
+        else
+            throw UserNotFoundException("Can't find user")
+
+        //return userRepository.isUserExists(nick) ?: throw UserNotFoundException("Can't find user")
     }
 
     private fun checkForumExists(forumName: String) {
