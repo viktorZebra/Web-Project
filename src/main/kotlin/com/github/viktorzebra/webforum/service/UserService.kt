@@ -16,7 +16,7 @@ class UserService(val userRepository: UserRepository){
     }
 
     fun getUserByEmail(email: String): UserModel {
-        return userRepository.getUserByNickname(email) ?: throw UserNotFoundException("Can't find user by email")
+        return userRepository.getUserByEmail(email) ?: throw UserNotFoundException("Can't find user by email")
     }
 
     fun isUserWithEmailExists(email: String): Int {
