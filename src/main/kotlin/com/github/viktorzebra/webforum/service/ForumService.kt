@@ -24,6 +24,7 @@ class ForumService(val forumRepository: ForumsRepository, val userRepository: Us
 
     private fun checkForumExists(forumName: String) {
         val existedForum = forumRepository.getForumBySlug(forumName)
+
         if (existedForum != null)
              throw ForumAlreadyCreatedException(existedForum)
     }
