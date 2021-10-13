@@ -1,6 +1,7 @@
 package com.github.viktorzebra.webforum.controller
 
 import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
+import com.github.viktorzebra.webforum.exception.ForumNotFoundException
 import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserNotFoundException
 import com.github.viktorzebra.webforum.model.ForumsModel
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ControllerAdvice {
     @ExceptionHandler(UserNotFoundException::class)
     fun userNotFoundException(e: UserNotFoundException): ResponseEntity<Response> {
-
         val response = Response(e.message)
         return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
     }
@@ -30,6 +30,12 @@ class ControllerAdvice {
     @ExceptionHandler(ForumAlreadyCreatedException::class)
     fun forumAlreadyCreatedException(e: ForumAlreadyCreatedException): ResponseEntity<ForumsModel> {
         return ResponseEntity<ForumsModel>(e.forumsModel, HttpStatus.CONFLICT)
+    }
+
+    @ExceptionHandler(ForumNotFoundException::class)
+    fun forumNotFoundException(e: ForumNotFoundException): ResponseEntity<Response> {
+        val response = Response(e.message)
+        return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
     }
 }
 

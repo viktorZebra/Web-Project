@@ -1,6 +1,7 @@
 package com.github.viktorzebra.webforum.controller
 
 import com.github.viktorzebra.webforum.model.ForumsModel
+import com.github.viktorzebra.webforum.model.UserModel
 import com.github.viktorzebra.webforum.service.ForumService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,5 +17,12 @@ class ForumResource(val forumService: ForumService){
         forumService.create(forum)
 
         return ResponseEntity(forum, HttpStatus.CREATED)
+    }
+
+    @GetMapping("/{slug}/details")
+    fun getForumInfo(@PathVariable slug: String): ResponseEntity<ForumsModel>{
+        val forum = forumService.getForumBySlug(slug)
+
+        return ResponseEntity(forum, HttpStatus.OK)
     }
 }
