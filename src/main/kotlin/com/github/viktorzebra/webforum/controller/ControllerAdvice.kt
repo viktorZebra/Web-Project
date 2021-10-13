@@ -1,10 +1,8 @@
 package com.github.viktorzebra.webforum.controller
 
-import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
-import com.github.viktorzebra.webforum.exception.ForumNotFoundException
-import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
-import com.github.viktorzebra.webforum.exception.UserNotFoundException
+import com.github.viktorzebra.webforum.exception.*
 import com.github.viktorzebra.webforum.model.ForumsModel
+import com.github.viktorzebra.webforum.model.ThreadsModel
 import com.github.viktorzebra.webforum.model.UserModel
 import org.springframework.http.HttpStatus
 
@@ -36,6 +34,11 @@ class ControllerAdvice {
     fun forumNotFoundException(e: ForumNotFoundException): ResponseEntity<Response> {
         val response = Response(e.message)
         return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(ThreadAlreadyCreatedException::class)
+    fun threadAlreadyCreatedException(e: ThreadAlreadyCreatedException): ResponseEntity<ThreadsModel> {
+        return ResponseEntity<ThreadsModel>(e.existedThread, HttpStatus.CONFLICT)
     }
 }
 

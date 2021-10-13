@@ -1,8 +1,11 @@
 package com.github.viktorzebra.webforum.model
 
+import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
+import java.sql.Timestamp
+import java.time.Instant
 
 @Table("threads")
-data class ThreadsModel(val id: Int, val forum: String, val title: String,
-                   val votes: Int, val message: String, val slug: String,
-                   val created: String,val author: String)
+data class ThreadsModel(@Id var id: Int? = null, var forum: String = "default", var title: String,
+                        var votes: Int, var message: String, var slug: String,
+                        var created: Timestamp = Timestamp.from(Instant.now()), var author: String)
