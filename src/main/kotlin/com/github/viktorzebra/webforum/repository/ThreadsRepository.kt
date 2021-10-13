@@ -8,4 +8,10 @@ import org.springframework.data.repository.query.Param
 interface ThreadsRepository : CrudRepository<ThreadsModel, Int> {
     @Query("select * from threads where slug = :slug")
     fun getThreadBySlug(@Param("slug") slug: String): ThreadsModel?
+
+    @Query("select COUNT(*) from threads where id = :id")
+    fun isThreadExistsById(@Param("id") id: Int): Int
+
+    @Query("select * from threads where id = :id")
+    fun getThreadById(@Param("id") id: Int): ThreadsModel?
 }

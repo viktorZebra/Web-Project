@@ -40,6 +40,12 @@ class ControllerAdvice {
     fun threadAlreadyCreatedException(e: ThreadAlreadyCreatedException): ResponseEntity<ThreadsModel> {
         return ResponseEntity<ThreadsModel>(e.existedThread, HttpStatus.CONFLICT)
     }
+
+    @ExceptionHandler(ThreadNotFoundException::class)
+    fun threadNotFoundException(e: ThreadNotFoundException): ResponseEntity<Response> {
+        val response = Response(e.message)
+        return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
+    }
 }
 
 class Response {

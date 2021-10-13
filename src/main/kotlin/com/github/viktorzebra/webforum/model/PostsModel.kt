@@ -2,8 +2,10 @@ package com.github.viktorzebra.webforum.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
+import java.sql.Timestamp
+import java.time.Instant
 
 @Table("posts")
-data class PostsModel(var path: Int, @Id var id: Int, var parent: Int,
-                      var author: String, var forum: String, var created: String,
-                      var message: String, var thread: Int, var is_edited: Boolean)
+data class PostsModel(var path: MutableList<Int>? = null, @Id var id: Int? = null, var parent: Int,
+                      var author: String, var forum: String = "default", var created: Timestamp = Timestamp.from(Instant.now()),
+                      var message: String, var thread: Int, var is_edited: Boolean = false)
