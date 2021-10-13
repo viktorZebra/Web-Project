@@ -1,8 +1,9 @@
 package com.github.viktorzebra.webforum.model
 
+import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 
 @Table("posts")
-data class PostsModel(val path: Int, val id: Int, val parent: Int,
-                      val author: String, val forum: String, val created: String,
-                      val message: String, val thread: Int, val is_edited: Boolean)
+data class PostsModel(var path: Int, @Id var id: Int, var parent: Int,
+                      var author: String, var forum: String, var created: String,
+                      var message: String, var thread: Int, var is_edited: Boolean)
