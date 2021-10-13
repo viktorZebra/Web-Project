@@ -1,6 +1,5 @@
 package com.github.viktorzebra.webforum.service
 
-import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserNotFoundException
 import com.github.viktorzebra.webforum.model.UserModel
@@ -21,6 +20,13 @@ class UserService(val userRepository: UserRepository){
 
     fun isUserWithEmailExists(email: String): Int {
         return userRepository.isUserWithEmailExists(email)
+    }
+
+    fun isUserWithNicknameExists(nick: String): Boolean {
+        if (userRepository.getCountUsersByNickname(nick) != 0)
+            return true
+        else
+            throw UserNotFoundException("Can't find user")
     }
 
     fun create(user: UserModel) {

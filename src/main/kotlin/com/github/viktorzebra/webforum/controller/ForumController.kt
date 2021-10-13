@@ -26,12 +26,4 @@ class ForumResource(val forumService: ForumService){
 
         return ResponseEntity(forum, HttpStatus.OK)
     }
-
-    @PostMapping("/{slugForum}/create")
-    fun createThread(@RequestBody thread: ThreadsModel, @PathVariable slugForum: String): ResponseEntity<ThreadsModel>{
-        thread.forum = slugForum
-        forumService.createThread(thread)
-
-        return ResponseEntity(thread, HttpStatus.CREATED)
-    }
 }

@@ -18,7 +18,6 @@ class UserResource(val userService: UserService){
         return ResponseEntity(user, HttpStatus.OK)
     }
 
-
     @PostMapping("/create")
     fun createNewUser(@RequestBody user: UserModel): ResponseEntity<UserModel>{
         userService.create(user)
