@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS forums (
 CREATE INDEX IF NOT EXISTS forums_slug ON forums USING HASH (slug);
 
 CREATE TABLE IF NOT EXISTS forum_users (
+            id SERIAL PRIMARY KEY,
 			forum_id INT,
 			user_id INT,
 			UNIQUE(forum_id, user_id),

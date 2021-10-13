@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ThreadsService @Autowired constructor(val threadRepository: ThreadsRepository,
-                                            val userService: UserService, val forumService: ForumService) {
+                                            val userService: UserService, val forumService: ForumService,
+                                            val forumUserService: ForumUsersService) {
 
     fun checkThreadExists(slug: String) {
         val existedThread = threadRepository.getThreadBySlug(slug)
@@ -34,7 +35,10 @@ class ThreadsService @Autowired constructor(val threadRepository: ThreadsReposit
     fun createThread(thread: ThreadsModel) {
         userService.isUserWithNicknameExists(thread.author)
         forumService.isForumExists(thread.forum)
+
         checkThreadExists(thread.slug)
+
+        forumUserService.save(thread.author, thread.forum)
         threadRepository.save(thread)
     }
 }
