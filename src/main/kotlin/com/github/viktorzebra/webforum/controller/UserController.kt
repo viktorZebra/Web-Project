@@ -25,7 +25,7 @@ class UserResource(val userService: UserService){
         return ResponseEntity(user, HttpStatus.CREATED)
     }
 
-    @PostMapping("/{nickname}/profile")
+    @PutMapping("/{nickname}/profile")
     fun updateUserProfile(@RequestBody user: UserModel, @PathVariable nickname: String): ResponseEntity<UserModel>{
         userService.updateProfile(user, nickname)
 
