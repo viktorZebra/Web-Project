@@ -1,6 +1,6 @@
 package com.github.viktorzebra.webforum.controller
 
-import com.github.viktorzebra.webforum.model.ThreadsModel
+import com.github.viktorzebra.webforum.model.entity.ThreadsEntity
 import com.github.viktorzebra.webforum.service.ThreadsService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class ThreadResource(val threadService: ThreadsService) {
 
     @PostMapping("/{slugForum}/create")
-    fun createThread(@RequestBody thread: ThreadsModel, @PathVariable slugForum: String): ResponseEntity<ThreadsModel>{
+    fun createThread(@RequestBody thread: ThreadsEntity, @PathVariable slugForum: String): ResponseEntity<ThreadsEntity>{
         thread.forum = slugForum
         threadService.createThread(thread)
 
