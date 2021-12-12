@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class PostResource(val postService: PostService) {
 
     @PostMapping("/{threadID}/create")
-    fun createThread(@RequestBody post: PostsModel, @PathVariable threadID: Int): ResponseEntity<PostsModel> {
+    fun createPost(@RequestBody post: PostsModel, @PathVariable threadID: Int): ResponseEntity<PostsModel> {
         post.thread = threadID
         postService.createPost(post)
 
