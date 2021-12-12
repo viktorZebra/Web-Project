@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 class UserResource(val userService: UserService){
 
     @GetMapping("/{nickname}/profile")
