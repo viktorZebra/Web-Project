@@ -50,7 +50,6 @@ CREATE TABLE IF NOT EXISTS posts (
 			path INT[],
             author_id INT,
             message TEXT,
-            is_edited BOOLEAN DEFAULT false,
             modified TIMESTAMP WITH TIME ZONE DEFAULT NULL,
             forum_id INT,
             thread_id INT,

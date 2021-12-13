@@ -267,6 +267,7 @@ paths:
             Сообщение отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
+  /post:
     post:
       summary: Создание новых постов
       description: |
@@ -274,12 +275,6 @@ paths:
         Все посты, созданные в рамках одного вызова данного метода должны иметь одинаковую дату создания (Post.Created).
       operationId: postsCreate
       parameters:
-        - name: id
-          in: path
-          description: Идентификатор ветки обсуждения.
-          required: true
-          type: string
-          format: identity
         - name: posts
           in: body
           description: Список создаваемых постов.

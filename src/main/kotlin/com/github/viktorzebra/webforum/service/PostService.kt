@@ -10,14 +10,15 @@ import org.springframework.stereotype.Service
 
 @Service
 class PostService @Autowired constructor(val postRepository: PostsRepository, val threadService: ThreadsService,
-                                         val userService: UserService, val forumUserService: ForumUsersService) {
+                                         val userService: UserService, val forumUserService: ForumUsersService,
+                                         val forumService: ForumService) {
 
     fun createPost(post: PostsModel) {
-        if (userService.isUserWithNicknameExists(post.author) && threadService.isThreadExists(post.thread)) {
-            post.forum = threadService.getThreadById(post.thread).forum
+        userService.getUserById(post.author_id.toString())
+        threadService.getThreadById(post.thread_id)
+        forumService.getForumById(post.forum_id.toString())
 
-            forumUserService.save(post.author, post.forum)
-            postRepository.save(post)
-        }
+        forumUserService.save(post.author_id, post.forum_id)
+        postRepository.save(post)
     }
 }
