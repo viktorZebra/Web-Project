@@ -46,6 +46,12 @@ class ControllerAdvice {
         val response = Response(e.message)
         return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
     }
+
+    @ExceptionHandler(PostNotFoundException::class)
+    fun forumNotFoundException(e: PostNotFoundException): ResponseEntity<Response> {
+        val response = Response(e.message)
+        return ResponseEntity<Response>(response, HttpStatus.NOT_FOUND)
+    }
 }
 
 class Response {

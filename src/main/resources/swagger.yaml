@@ -201,9 +201,9 @@ paths:
             $ref: '#/definitions/Error'
   /post/{id}:
     get:
-      summary: Получение информации о ветке обсуждения
+      summary: Получение информации о сообщении
       description: |
-        Получение информации о ветке обсуждения по его имени.
+        Получение информации о сообщении по его id.
       consumes: [ ]
       operationId: postGetOne
       parameters:
