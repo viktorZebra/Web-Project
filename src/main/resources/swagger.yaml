@@ -13,7 +13,7 @@ consumes:
 produces:
   - application/json
 paths:
-  /forum/create:
+  /forum:
     post:
       summary: Создание форума
       description: |
@@ -44,7 +44,7 @@ paths:
             Возвращает данные ранее созданного форума.
           schema:
             $ref: '#/definitions/Forum'
-  /forum/{slug}/details:
+  /forum/{id}:
     get:
       summary: Получение информации о форуме
       description: |
@@ -52,7 +52,7 @@ paths:
       consumes: [ ]
       operationId: forumGetOne
       parameters:
-        - name: slug
+        - name: id
           in: path
           description: Идентификатор форума.
           required: true
@@ -69,14 +69,14 @@ paths:
             Форум отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-  /forum/{slug}/create:
+  /forum/{id}/thread:
     post:
       summary: Создание ветки
       description: |
         Добавление новой ветки обсуждения на форум.
       operationId: threadCreate
       parameters:
-        - name: slug
+        - name: id
           in: path
           description: Идентификатор форума.
           required: true
@@ -106,7 +106,7 @@ paths:
             Возвращает данные ранее созданной ветки обсуждения.
           schema:
             $ref: '#/definitions/Thread'
-  /forum/{slug}/users:
+  /forum/{id}/users:
     get:
       summary: Пользователи данного форума
       description: |
@@ -116,7 +116,7 @@ paths:
       consumes: [ ]
       operationId: forumGetUsers
       parameters:
-        - name: slug
+        - name: id
           in: path
           description: Идентификатор форума.
           required: true
@@ -153,7 +153,7 @@ paths:
             Форум отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-  /forum/{slug}/threads:
+  /forum/{id}/threads:
     get:
       summary: Список ветвей обсужления форума
       description: |
@@ -162,7 +162,7 @@ paths:
       consumes: [ ]
       operationId: forumGetThreads
       parameters:
-        - name: slug
+        - name: id
           in: path
           description: Идентификатор форума.
           required: true
@@ -199,7 +199,7 @@ paths:
             Форум отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-  /post/{id}/details:
+  /post/{id}:
     get:
       summary: Получение информации о ветке обсуждения
       description: |
@@ -237,7 +237,7 @@ paths:
             Ветка обсуждения отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
-    post:
+    patch:
       summary: Изменение сообщения
       description: |
         Изменение сообщения на форуме.
@@ -267,32 +267,6 @@ paths:
             Сообщение отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
-  /service/clear:
-    post:
-      consumes:
-        - application/json
-        - application/octet-stream
-      summary: Очистка всех данных в базе
-      description: |
-        Безвозвратное удаление всей пользовательской информации из базы данных.
-      operationId: clear
-      responses:
-        200:
-          description: Очистка базы успешно завершена
-  /service/status:
-    get:
-      summary: Получение инфомарции о базе данных
-      description: |
-        Получение инфомарции о базе данных.
-      consumes: [ ]
-      operationId: status
-      responses:
-        200:
-          description: |
-            Кол-во записей в базе данных, включая помеченные как "удалённые".
-          schema:
-            $ref: '#/definitions/Status'
-  /thread/{slug_or_id}/create:
     post:
       summary: Создание новых постов
       description: |
@@ -300,7 +274,7 @@ paths:
         Все посты, созданные в рамках одного вызова данного метода должны иметь одинаковую дату создания (Post.Created).
       operationId: postsCreate
       parameters:
-        - name: slug_or_id
+        - name: id
           in: path
           description: Идентификатор ветки обсуждения.
           required: true
@@ -329,7 +303,7 @@ paths:
             Хотя бы один родительский пост отсутсвует в текущей ветке обсуждения.
           schema:
             $ref: '#/definitions/Error'
-  /thread/{slug_or_id}/details:
+  /thread/{id}:
     get:
       summary: Получение информации о ветке обсуждения
       description: |
@@ -337,7 +311,7 @@ paths:
       consumes: [ ]
       operationId: threadGetOne
       parameters:
-        - name: slug_or_id
+        - name: id
           in: path
           description: Идентификатор ветки обсуждения.
           required: true
@@ -353,13 +327,13 @@ paths:
             Ветка обсуждения отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
-    post:
+    put:
       summary: Обновление ветки
       description: |
         Обновление ветки обсуждения на форуме.
       operationId: threadUpdate
       parameters:
-        - name: slug_or_id
+        - name: id
           in: path
           description: Идентификатор ветки обсуждения.
           required: true
@@ -382,7 +356,7 @@ paths:
             Ветка обсуждения отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
-  /thread/{slug_or_id}/posts:
+  /thread/{id}/posts:
     get:
       summary: Сообщения данной ветви обсуждения
       description: |
@@ -391,7 +365,7 @@ paths:
       consumes: [ ]
       operationId: threadGetPosts
       parameters:
-        - name: slug_or_id
+        - name: id
           in: path
           description: Идентификатор ветки обсуждения.
           required: true
@@ -445,46 +419,14 @@ paths:
             Ветка обсуждения отсутсвует в форуме.
           schema:
             $ref: '#/definitions/Error'
-  /thread/{slug_or_id}/vote:
-    post:
-      summary: Проголосовать за ветвь обсуждения
-      description: |
-        Изменение голоса за ветвь обсуждения.
-        Один пользователь учитывается только один раз и может изменить своё
-        мнение.
-      operationId: threadVote
-      parameters:
-        - name: slug_or_id
-          in: path
-          description: Идентификатор ветки обсуждения.
-          required: true
-          type: string
-          format: identity
-        - name: vote
-          in: body
-          description: Информация о голосовании пользователя.
-          required: true
-          schema:
-            $ref: '#/definitions/Vote'
-      responses:
-        200:
-          description: |
-            Информация о ветке обсуждения.
-          schema:
-            $ref: '#/definitions/Thread'
-        404:
-          description: |
-            Ветка обсуждения отсутсвует в форуме.
-          schema:
-            $ref: '#/definitions/Error'
-  /user/{nickname}/create:
+  /user/{id}:
     post:
       summary: Создание нового пользователя
       description: |
         Создание нового пользователя в базе данных.
       operationId: userCreate
       parameters:
-        - name: nickname
+        - name: id
           in: path
           description: Идентификатор пользователя.
           required: true
@@ -508,7 +450,6 @@ paths:
             Возвращает данные ранее созданных пользователей с тем же nickname-ом иои email-ом.
           schema:
             $ref: '#/definitions/Users'
-  /user/{nickname}/profile:
     get:
       summary: Получение информации о пользователе
       description: |
@@ -516,7 +457,7 @@ paths:
       consumes: [ ]
       operationId: userGetOne
       parameters:
-        - name: nickname
+        - name: id
           in: path
           description: Идентификатор пользователя.
           required: true
@@ -532,13 +473,13 @@ paths:
             Пользователь отсутсвует в системе.
           schema:
             $ref: '#/definitions/Error'
-    post:
+    put:
       summary: Изменение данных о пользователе
       description: |
         Изменение информации в профиле пользователя.
       operationId: userUpdate
       parameters:
-        - name: nickname
+        - name: id
           in: path
           description: Идентификатор пользователя.
           required: true

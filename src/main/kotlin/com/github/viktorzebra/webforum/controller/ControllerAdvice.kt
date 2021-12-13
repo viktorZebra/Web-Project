@@ -1,9 +1,9 @@
 package com.github.viktorzebra.webforum.controller
 
 import com.github.viktorzebra.webforum.exception.*
-import com.github.viktorzebra.webforum.model.ForumsModel
-import com.github.viktorzebra.webforum.model.ThreadsModel
-import com.github.viktorzebra.webforum.model.UserModel
+import com.github.viktorzebra.webforum.model.entity.ForumsEntity
+import com.github.viktorzebra.webforum.model.entity.ThreadsEntity
+import com.github.viktorzebra.webforum.model.entity.UserEntity
 import org.springframework.http.HttpStatus
 
 import org.springframework.http.ResponseEntity
@@ -21,13 +21,13 @@ class ControllerAdvice {
     }
 
     @ExceptionHandler(UserAlreadyCreatedException::class)
-    fun userAlreadyCreatedException(e: UserAlreadyCreatedException): ResponseEntity<UserModel> {
-        return ResponseEntity<UserModel>(e.userModel, HttpStatus.CONFLICT)
+    fun userAlreadyCreatedException(e: UserAlreadyCreatedException): ResponseEntity<UserEntity> {
+        return ResponseEntity<UserEntity>(e.userModel, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(ForumAlreadyCreatedException::class)
-    fun forumAlreadyCreatedException(e: ForumAlreadyCreatedException): ResponseEntity<ForumsModel> {
-        return ResponseEntity<ForumsModel>(e.forumsModel, HttpStatus.CONFLICT)
+    fun forumAlreadyCreatedException(e: ForumAlreadyCreatedException): ResponseEntity<ForumsEntity> {
+        return ResponseEntity<ForumsEntity>(e.forumsModel, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(ForumNotFoundException::class)
@@ -37,8 +37,8 @@ class ControllerAdvice {
     }
 
     @ExceptionHandler(ThreadAlreadyCreatedException::class)
-    fun threadAlreadyCreatedException(e: ThreadAlreadyCreatedException): ResponseEntity<ThreadsModel> {
-        return ResponseEntity<ThreadsModel>(e.existedThread, HttpStatus.CONFLICT)
+    fun threadAlreadyCreatedException(e: ThreadAlreadyCreatedException): ResponseEntity<ThreadsEntity> {
+        return ResponseEntity<ThreadsEntity>(e.existedThread, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(ThreadNotFoundException::class)

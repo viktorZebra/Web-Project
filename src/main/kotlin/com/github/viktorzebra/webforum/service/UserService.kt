@@ -2,7 +2,7 @@ package com.github.viktorzebra.webforum.service
 
 import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserNotFoundException
-import com.github.viktorzebra.webforum.model.UserModel
+import com.github.viktorzebra.webforum.model.entity.UserEntity
 import com.github.viktorzebra.webforum.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(val userRepository: UserRepository){
 
-    fun getUserByNickname(nick: String): UserModel {
+    fun getUserByNickname(nick: String): UserEntity {
         return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException("Can't find user by nickname")
     }
 
-    fun getUserByEmail(email: String): UserModel {
+    fun getUserByEmail(email: String): UserEntity {
         return userRepository.getUserByEmail(email) ?: throw UserNotFoundException("Can't find user by email")
     }
 
@@ -29,12 +29,12 @@ class UserService(val userRepository: UserRepository){
             throw UserNotFoundException("Can't find user")
     }
 
-    fun create(user: UserModel) {
+    fun create(user: UserEntity) {
         checkUserExists(user.email, user.nickname!!)
         userRepository.save(user)
     }
 
-    fun updateProfile(newUser: UserModel, nickname: String) {
+    fun updateProfile(newUser: UserEntity, nickname: String) {
         val currentUser = getUserByNickname(nickname)
         val userWithEmailForReplace = userRepository.getUserByEmail(newUser.email)
 

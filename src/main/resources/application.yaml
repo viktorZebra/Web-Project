@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/WebBlog
+    username: postgres
+    password: follout99
+  jpa:
+    database: WebBlog
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
