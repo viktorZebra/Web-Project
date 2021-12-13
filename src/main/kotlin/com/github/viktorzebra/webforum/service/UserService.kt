@@ -43,11 +43,8 @@ class UserService(val userRepository: UserRepository) {
         val userWithEmailForReplace = userRepository.getUserByEmail(newUser.email)
 
         if (userWithEmailForReplace == null || currentUser.email == newUser.email) {
-            currentUser.fullname = newUser.fullname
-            currentUser.about = newUser.about
-            currentUser.email = newUser.email
-
-            userRepository.save(currentUser)
+            newUser.id = id.toInt()
+            userRepository.save(newUser)
 
         } else {
             throw UserAlreadyCreatedException(userWithEmailForReplace)

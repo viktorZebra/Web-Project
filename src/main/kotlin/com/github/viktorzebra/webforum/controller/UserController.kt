@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class UserResource(val userService: UserService){
 
     @GetMapping("/{id}")
-    fun getUserProfile(@PathVariable id: String): ResponseEntity<UserModel>{
+    fun getUser(@PathVariable id: String): ResponseEntity<UserModel>{
         val user = userService.getUserById(id)
 
         return ResponseEntity(user, HttpStatus.OK)
@@ -26,7 +26,7 @@ class UserResource(val userService: UserService){
     }
 
     @PutMapping("/{id}")
-    fun updateUserProfile(@RequestBody user: UserModel, @PathVariable id: String): ResponseEntity<UserModel>{
+    fun updateUser(@RequestBody user: UserModel, @PathVariable id: String): ResponseEntity<UserModel>{
         userService.updateProfile(user, id)
 
         return ResponseEntity(userService.getUserById(id), HttpStatus.OK)
