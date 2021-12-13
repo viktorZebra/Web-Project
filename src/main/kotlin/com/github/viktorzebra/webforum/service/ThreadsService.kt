@@ -33,12 +33,12 @@ class ThreadsService @Autowired constructor(val threadRepository: ThreadsReposit
     }
 
     fun createThread(thread: ThreadsModel) {
-        userService.isUserWithNicknameExists(thread.author)
-        forumService.isForumExists(thread.forum)
+        userService.getUserById(thread.author_id.toString())
+        forumService.getForumById(thread.forum_id.toString())
 
         checkThreadExists(thread.slug)
 
-        forumUserService.save(thread.author, thread.forum)
+        forumUserService.save(thread.author_id, thread.forum_id)
         threadRepository.save(thread)
     }
 }

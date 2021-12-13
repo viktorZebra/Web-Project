@@ -6,6 +6,11 @@ import java.sql.Timestamp
 import java.time.Instant
 
 @Table("threads")
-data class ThreadsModel(@Id var id: Int? = null, var forum: String = "default", var title: String,
-                        var votes: Int, var message: String, var slug: String,
-                        var created: Timestamp = Timestamp.from(Instant.now()), var author: String)
+data class ThreadsModel(@Id var id: Int? = null,
+                        var forum_id: Int,
+                        var title: String,
+                        var votes: Int,
+                        var message: String,
+                        var slug: String,
+                        var created: Timestamp = Timestamp.from(Instant.now()),
+                        var author_id: Int)

@@ -32,11 +32,11 @@ class ForumService @Autowired constructor(val forumRepository: ForumsRepository,
              throw ForumAlreadyCreatedException(existedForum)
     }
 
-    fun isForumExists(slug: String): Boolean {
-        if (forumRepository.getCountForum(slug) != 0)
-            return true
-        else
-            throw ForumNotFoundException("Can't find forum")
-    }
+//    fun isForumExists(id: String): Boolean {
+//        if (forumRepository.getCountForum(slug) != 0)
+//            return true
+//        else
+//            throw ForumNotFoundException("Can't find forum")
+//    }
 }
 
