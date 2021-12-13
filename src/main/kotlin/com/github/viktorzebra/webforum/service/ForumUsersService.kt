@@ -1,11 +1,7 @@
 package com.github.viktorzebra.webforum.service
 
-import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
-import com.github.viktorzebra.webforum.exception.ForumNotFoundException
-import com.github.viktorzebra.webforum.model.ForumUsersModel
-import com.github.viktorzebra.webforum.model.ForumsModel
+import com.github.viktorzebra.webforum.model.entity.ForumUsersEntity
 import com.github.viktorzebra.webforum.repository.ForumUsersRepository
-import com.github.viktorzebra.webforum.repository.ForumsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -18,7 +14,7 @@ class ForumUsersService @Autowired constructor(val forumUsersRepository: ForumUs
         val forumID = forumService.getForumBySlug(forumSlug).id
 
         if (isUserInForumExists(userID, forumID)) {
-            forumUsersRepository.save(ForumUsersModel(user_id = userID, forum_id = forumID))
+            forumUsersRepository.save(ForumUsersEntity(user_id = userID, forum_id = forumID))
         }
     }
 

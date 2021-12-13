@@ -1,6 +1,6 @@
 package com.github.viktorzebra.webforum.exception
 
-import com.github.viktorzebra.webforum.model.UserModel
+import com.github.viktorzebra.webforum.model.entity.UserEntity
 
-class UserAlreadyCreatedException(val userModel: UserModel?) : RuntimeException() {
+class UserAlreadyCreatedException(val userModel: UserEntity?) : RuntimeException() {
 }
