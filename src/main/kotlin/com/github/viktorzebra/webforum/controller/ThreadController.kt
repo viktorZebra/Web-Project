@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Service
-@RequestMapping("/api/thread")
+@RequestMapping("/api/v1/thread")
 class ThreadResource(val threadService: ThreadsService) {
 
     @PostMapping("/{slugForum}/create")

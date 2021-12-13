@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Service
-@RequestMapping("/api/post")
+@RequestMapping("/api/v1/post")
 class PostResource(val postService: PostService) {
 
     @PostMapping("/{threadID}/create")

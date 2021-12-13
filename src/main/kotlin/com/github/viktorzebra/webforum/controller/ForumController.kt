@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/forum")
+@RequestMapping("/api/v1/forum")
 class ForumResource(val forumService: ForumService){
 
     @PostMapping("/create")

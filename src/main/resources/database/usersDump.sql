@@ -999,4 +999,4 @@ INSERT INTO users (fullname, email, nickname, id, about) VALUES
 ('Helaine Littel','tommie.strosin@yahoo.com997','Wesley Dodds997',997,'Alduin'),
 ('Tamisha O Reilly','bunny.veum.ret@hotmail.com998','Harvey Bullock998',998,'Serpentine Dragon'),
 ('Felice Mosciski','maurine.legros.v@gmail.com999','John Stewart999',999,'Sahloknir'),
-('Herman Beahan','mr.alleen.greenholt@yahoo.com1000','Tim Drake1000',1000,'Revered Dragon'),
+('Herman Beahan','mr.alleen.greenholt@yahoo.com1000','Tim Drake1000',1000,'Revered Dragon')
