@@ -54,4 +54,9 @@ class ThreadsService @Autowired constructor(val threadRepository: ThreadsReposit
         forumUserService.save(thread.author_id, thread.forum_id)
         threadRepository.save(thread)
     }
+
+    fun getThreadByForum(id: Int): MutableList<ThreadsModel?> {
+        forumService.getForumById(id.toString())
+        return threadRepository.getThreadByForum(id)
+    }
 }

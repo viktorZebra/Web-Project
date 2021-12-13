@@ -5,6 +5,7 @@ import com.github.viktorzebra.webforum.exception.ForumNotFoundException
 import com.github.viktorzebra.webforum.model.ForumUsersModel
 import com.github.viktorzebra.webforum.model.ForumsModel
 import com.github.viktorzebra.webforum.model.ThreadsModel
+import com.github.viktorzebra.webforum.model.UserModel
 import com.github.viktorzebra.webforum.repository.ForumUsersRepository
 import com.github.viktorzebra.webforum.repository.ForumsRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,5 +23,9 @@ class ForumUsersService @Autowired constructor(val forumUsersRepository: ForumUs
 
     fun isUserInForumExists(userId: Int, forumId: Int): Boolean {
         return forumUsersRepository.isUserInForumExists(userId, forumId) == 0
+    }
+
+    fun getUsersByForum(forumId: Int): MutableList<UserModel?> {
+        return forumUsersRepository.getUsersByForum(forumId)
     }
 }

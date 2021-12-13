@@ -14,4 +14,7 @@ interface ThreadsRepository : CrudRepository<ThreadsModel, Int> {
 
     @Query("select * from threads where id = :id")
     fun getThreadById(@Param("id") id: Int): ThreadsModel?
+
+    @Query("select * from threads where forum_id = :id")
+    fun getThreadByForum(@Param("id") id: Int): MutableList<ThreadsModel?>
 }
