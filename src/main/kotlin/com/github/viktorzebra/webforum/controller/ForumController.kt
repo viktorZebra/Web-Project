@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/forum")
 class ForumResource(val forumService: ForumService){
 
-    @PostMapping("/create")
-    fun create(@RequestBody forum: ForumsModel): ResponseEntity<ForumsModel>{
+    @PostMapping
+    fun createForum(@RequestBody forum: ForumsModel): ResponseEntity<ForumsModel>{
         forumService.create(forum)
 
         return ResponseEntity(forum, HttpStatus.CREATED)
     }
 
-    @GetMapping("/{slug}/details")
-    fun getForumInfo(@PathVariable slug: String): ResponseEntity<ForumsModel>{
-        val forum = forumService.getForumBySlug(slug)
+    @GetMapping("/{id}")
+    fun getForum(@PathVariable id: String): ResponseEntity<ForumsModel>{
+        val forum = forumService.getForumById(id)
 
         return ResponseEntity(forum, HttpStatus.OK)
     }

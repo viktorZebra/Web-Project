@@ -10,6 +10,9 @@ interface ForumsRepository : CrudRepository<ForumsModel, Int> {
     @Query("select * from forums where slug = :slug")
     fun getForumBySlug(@Param("slug") slug: String): ForumsModel?
 
+    @Query("select * from forums where id = :id")
+    fun getForumById(@Param("id") id: Int): ForumsModel?
+
     @Query("select COUNT(*) from forums where slug = :slug")
     fun getCountForum(@Param("slug") slug: String): Int
 }

@@ -14,11 +14,15 @@ class ForumService @Autowired constructor(val forumRepository: ForumsRepository,
         return forumRepository.getForumBySlug(slug) ?: throw ForumNotFoundException("Can't find forum by slug")
     }
 
+    fun getForumById(id: String): ForumsModel {
+        return forumRepository.getForumById(id.toInt()) ?: throw ForumNotFoundException("Can't find forum by id")
+    }
+
     fun create(forum: ForumsModel) {
         checkForumExists(forum.slug)
+        userService.getUserById(forum.author_id.toString())
 
-        if (userService.isUserWithNicknameExists(forum.user_nickname))
-            forumRepository.save(forum)
+        forumRepository.save(forum)
     }
 
     private fun checkForumExists(forumName: String) {
