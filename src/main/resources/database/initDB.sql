@@ -3,19 +3,18 @@ CREATE TABLE IF NOT EXISTS users (
             nickname text UNIQUE,
             fullname VARCHAR(255),
             about TEXT,
-            email text UNIQUE
+            email text UNIQUE,
+            count_view_profile INT
         );
-CREATE INDEX IF NOT EXISTS users_nickname ON users USING HASH (nickname);
+CREATE INDEX IF NOT EXISTS users_id ON users USING HASH (id);
 CREATE INDEX IF NOT EXISTS users_email ON users USING HASH (email);
 
 CREATE TABLE IF NOT EXISTS forums (
             id SERIAL PRIMARY KEY,
-            user_nickname text,
+            author_id INT,
             title VARCHAR(255),
             slug text UNIQUE,
-			threads INT DEFAULT 0,
-			posts INT DEFAULT 0,
-			FOREIGN KEY (user_nickname) REFERENCES users (nickname)
+			FOREIGN KEY (author_id) REFERENCES users (id)
         );
 CREATE INDEX IF NOT EXISTS forums_slug ON forums USING HASH (slug);
 
@@ -31,37 +30,38 @@ CREATE INDEX IF NOT EXISTS forum_users_forum_id ON forum_users (forum_id);
 
 CREATE TABLE IF NOT EXISTS threads (
             id SERIAL PRIMARY KEY,
-            forum text,
+            forum_id INT,
             title VARCHAR(255),
-            author text,
+            author_id INT,
             message TEXT,
             created TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
             votes INT DEFAULT 0,
             slug text,
-			FOREIGN KEY (forum) REFERENCES forums (slug),
-			FOREIGN KEY (author) REFERENCES users (nickname)
+			FOREIGN KEY (forum_id) REFERENCES forums (id),
+			FOREIGN KEY (author_id) REFERENCES users (id)
         );
 CREATE INDEX IF NOT EXISTS threads_slug ON threads USING HASH (slug);
-CREATE INDEX IF NOT EXISTS threads_forum ON threads USING HASH (forum);
-CREATE INDEX IF NOT EXISTS threads_forum_created ON threads (forum, created);
+CREATE INDEX IF NOT EXISTS threads_forum ON threads USING HASH (forum_id);
+CREATE INDEX IF NOT EXISTS threads_forum_created ON threads (forum_id, created);
 
 CREATE TABLE IF NOT EXISTS posts (
             id SERIAL PRIMARY KEY,
             parent INT,
 			path INT[],
-            author text,
+            author_id INT,
             message TEXT,
             is_edited BOOLEAN DEFAULT false,
-            forum text,
-            thread INT,
+            modified TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+            forum_id INT,
+            thread_id INT,
             created TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-			FOREIGN KEY (author) REFERENCES users (nickname),
-			FOREIGN KEY (forum) REFERENCES forums (slug),
-			FOREIGN KEY (thread) REFERENCES threads (id)
+			FOREIGN KEY (author_id) REFERENCES users (id),
+			FOREIGN KEY (forum_id) REFERENCES forums (id),
+			FOREIGN KEY (thread_id) REFERENCES threads (id)
         );
-CREATE INDEX IF NOT EXISTS post_thread ON posts (thread);
-CREATE INDEX IF NOT EXISTS post_thread_id ON posts (thread, id);
-CREATE INDEX IF NOT EXISTS post_thread_parent_path2 ON posts (thread, parent, (path[2]));
+CREATE INDEX IF NOT EXISTS post_thread ON posts (thread_id);
+CREATE INDEX IF NOT EXISTS post_thread_id ON posts (thread_id, id);
+CREATE INDEX IF NOT EXISTS post_thread_parent_path2 ON posts (thread_id, parent, (path[2]));
 CREATE INDEX IF NOT EXISTS post_path2 on posts ((path[2]));
 CREATE INDEX IF NOT EXISTS post_path2_path ON posts ((path[2]) DESC, path ASC);
 CREATE INDEX IF NOT EXISTS post_path ON posts (path ASC);
@@ -76,13 +76,15 @@ CREATE TABLE IF NOT EXISTS thread_votes (
 		);
 CREATE INDEX IF NOT EXISTS thread_votes_thread_nickname ON thread_votes (thread_id, user_id);
 
-CREATE TABLE IF NOT EXISTS status (
-			users INT,
-			forums INT,
-			threads INT,
-			posts INT
+CREATE TABLE IF NOT EXISTS statistics (
+			count_users INT,
+			count_forums INT,
+			count_threads INT,
+            most_popular_user INT,
+            most_viewed_profile INT,
+            FOREIGN KEY (most_popular_user) REFERENCES users (id),
+            FOREIGN KEY (most_viewed_profile) REFERENCES users (id)
 		);
-INSERT INTO status (users, forums, threads, posts) VALUES (0, 0, 0, 0);
 
 CREATE OR REPLACE FUNCTION update_path()
 			RETURNS TRIGGER

@@ -8,7 +8,11 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class UserService(val userRepository: UserRepository){
+class UserService(val userRepository: UserRepository) {
+
+    fun getUserById(id: String): UserModel {
+        return userRepository.getUserById(id.toInt()) ?: throw UserNotFoundException("Can't find user by id")
+    }
 
     fun getUserByNickname(nick: String): UserModel {
         return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException("Can't find user by nickname")
@@ -34,8 +38,8 @@ class UserService(val userRepository: UserRepository){
         userRepository.save(user)
     }
 
-    fun updateProfile(newUser: UserModel, nickname: String) {
-        val currentUser = getUserByNickname(nickname)
+    fun updateProfile(newUser: UserModel, id: String) {
+        val currentUser = getUserById(id)
         val userWithEmailForReplace = userRepository.getUserByEmail(newUser.email)
 
         if (userWithEmailForReplace == null || currentUser.email == newUser.email) {

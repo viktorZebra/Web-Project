@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/v1/user")
 class UserResource(val userService: UserService){
 
-    @GetMapping("/{nickname}/profile")
-    fun getUserProfile(@PathVariable nickname: String): ResponseEntity<UserModel>{
-        val user = userService.getUserByNickname(nickname)
+    @GetMapping("/{id}")
+    fun getUserProfile(@PathVariable id: String): ResponseEntity<UserModel>{
+        val user = userService.getUserById(id)
 
         return ResponseEntity(user, HttpStatus.OK)
     }
 
-    @PostMapping("/create")
-    fun createNewUser(@RequestBody user: UserModel): ResponseEntity<UserModel>{
+    @PostMapping
+    fun createUser(@RequestBody user: UserModel): ResponseEntity<UserModel>{
         userService.create(user)
 
         return ResponseEntity(user, HttpStatus.CREATED)
     }
 
-    @PutMapping("/{nickname}/profile")
-    fun updateUserProfile(@RequestBody user: UserModel, @PathVariable nickname: String): ResponseEntity<UserModel>{
-        userService.updateProfile(user, nickname)
+    @PutMapping("/{id}")
+    fun updateUserProfile(@RequestBody user: UserModel, @PathVariable id: String): ResponseEntity<UserModel>{
+        userService.updateProfile(user, id)
 
-        return ResponseEntity(userService.getUserByNickname(nickname), HttpStatus.OK)
+        return ResponseEntity(userService.getUserById(id), HttpStatus.OK)
     }
 }
