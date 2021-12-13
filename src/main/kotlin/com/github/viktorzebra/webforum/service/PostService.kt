@@ -1,6 +1,8 @@
 package com.github.viktorzebra.webforum.service
 
+import com.github.viktorzebra.webforum.exception.ForumNotFoundException
 import com.github.viktorzebra.webforum.exception.ThreadAlreadyCreatedException
+import com.github.viktorzebra.webforum.model.ForumsModel
 import com.github.viktorzebra.webforum.model.PostsModel
 import com.github.viktorzebra.webforum.model.ThreadsModel
 import com.github.viktorzebra.webforum.repository.PostsRepository
@@ -20,5 +22,10 @@ class PostService @Autowired constructor(val postRepository: PostsRepository, va
 
         forumUserService.save(post.author_id, post.forum_id)
         postRepository.save(post)
+    }
+
+    fun getPostsByThreadId(id: String): MutableList<PostsModel?> {
+        return postRepository.getPostsByThreadId(id.toInt())
+
     }
 }

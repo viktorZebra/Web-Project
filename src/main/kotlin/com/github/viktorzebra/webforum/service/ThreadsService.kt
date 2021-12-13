@@ -2,7 +2,9 @@ package com.github.viktorzebra.webforum.service
 
 import com.github.viktorzebra.webforum.exception.ThreadAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.ThreadNotFoundException
+import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.model.ThreadsModel
+import com.github.viktorzebra.webforum.model.UserModel
 import com.github.viktorzebra.webforum.repository.ThreadsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,6 +19,17 @@ class ThreadsService @Autowired constructor(val threadRepository: ThreadsReposit
 
         if (existedThread != null)
             throw ThreadAlreadyCreatedException(existedThread)
+    }
+
+    fun updateThread(newThread: ThreadsModel, id: String) {
+        val existsThread = threadRepository.getThreadBySlug(newThread.slug)
+
+        if (existsThread == null || existsThread.id == id.toInt()) {
+            newThread.id = id.toInt()
+            threadRepository.save(newThread)
+        } else {
+            throw ThreadAlreadyCreatedException(existsThread)
+        }
     }
 
     fun isThreadExists(id: Int): Boolean {
