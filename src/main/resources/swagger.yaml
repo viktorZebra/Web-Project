@@ -201,9 +201,9 @@ paths:
             $ref: '#/definitions/Error'
   /post/{id}:
     get:
-      summary: Получение информации о ветке обсуждения
+      summary: Получение информации о сообщении
       description: |
-        Получение информации о ветке обсуждения по его имени.
+        Получение информации о сообщении по его идентификатору.
       consumes: [ ]
       operationId: postGetOne
       parameters:
@@ -268,10 +268,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     post:
-      summary: Создание новых постов
+      summary: Создание новых сообщений
       description: |
-        Добавление новых постов в ветку обсуждения на форум.
-        Все посты, созданные в рамках одного вызова данного метода должны иметь одинаковую дату создания (Post.Created).
+        Добавление новых сообщений в ветку обсуждения на форум.
       operationId: postsCreate
       parameters:
         - name: id
