@@ -2,29 +2,43 @@ package com.github.viktorzebra.webforum.service
 
 import com.github.viktorzebra.webforum.exception.ForumAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.ForumNotFoundException
-import com.github.viktorzebra.webforum.model.ForumsModel
-import com.github.viktorzebra.webforum.model.UserModel
+import com.github.viktorzebra.webforum.model.Forums
+import com.github.viktorzebra.webforum.model.entity.ForumsEntity
+import com.github.viktorzebra.webforum.model.mapper.ForumsMapper
 import com.github.viktorzebra.webforum.repository.ForumsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class ForumService @Autowired constructor(val forumRepository: ForumsRepository,
-                                          val userService: UserService) {
+                                          val userService: UserService,
+                                          val convert: ForumsMapper) {
 
-    fun getForumBySlug(slug: String): ForumsModel {
-        return forumRepository.getForumBySlug(slug) ?: throw ForumNotFoundException("Can't find forum by slug")
+    fun getForumBySlug(slug: String): Forums {
+        val forums: ForumsEntity? = forumRepository.getForumBySlug(slug)
+        if (forums != null) {
+            return forums.let { convert.convertEntityToModel(it) }
+        }
+        else{
+            throw ForumNotFoundException("Can't find forum by slug")
+        }
     }
 
-    fun getForumById(id: String): ForumsModel {
-        return forumRepository.getForumById(id.toInt()) ?: throw ForumNotFoundException("Can't find forum by id")
+    fun getForumById(id: String): Forums {
+        val forums: ForumsEntity? = forumRepository.getForumById(id.toInt())
+        if (forums != null) {
+            return forums.let { convert.convertEntityToModel(it) }
+        }
+        else{
+            throw ForumNotFoundException("Can't find forum by id")
+        }
     }
 
-    fun create(forum: ForumsModel) {
+    fun create(forum: Forums) {
         checkForumExists(forum.slug)
         userService.getUserById(forum.author_id.toString())
 
-        forumRepository.save(forum)
+        forumRepository.save(forum.let { convert.convertModelToEntity(it) })
     }
 
     private fun checkForumExists(forumName: String) {
@@ -33,12 +47,5 @@ class ForumService @Autowired constructor(val forumRepository: ForumsRepository,
         if (existedForum != null)
              throw ForumAlreadyCreatedException(existedForum)
     }
-
-//    fun isForumExists(id: String): Boolean {
-//        if (forumRepository.getCountForum(slug) != 0)
-//            return true
-//        else
-//            throw ForumNotFoundException("Can't find forum")
-//    }
 }
 

@@ -2,24 +2,49 @@ package com.github.viktorzebra.webforum.service
 
 import com.github.viktorzebra.webforum.exception.UserAlreadyCreatedException
 import com.github.viktorzebra.webforum.exception.UserNotFoundException
-import com.github.viktorzebra.webforum.model.UserModel
+import com.github.viktorzebra.webforum.model.User
+import com.github.viktorzebra.webforum.model.entity.UserEntity
+import com.github.viktorzebra.webforum.model.mapper.UserMapper
+
 import com.github.viktorzebra.webforum.repository.UserRepository
 import org.springframework.stereotype.Service
 
 
 @Service
-class UserService(val userRepository: UserRepository) {
+class UserService(val userRepository: UserRepository,
+                  val convert: UserMapper) {
 
-    fun getUserById(id: String): UserModel {
-        return userRepository.getUserById(id.toInt()) ?: throw UserNotFoundException("Can't find user by id")
+    fun getUserById(id: String): User
+    {
+        val user: UserEntity? = userRepository.getUserById(id.toInt())
+        if (user != null) {
+            return user.let { convert.convertEntityToModel(it) }
+        }
+        else{
+            throw UserNotFoundException("Can't find user by id")
+        }
     }
 
-    fun getUserByNickname(nick: String): UserModel {
-        return userRepository.getUserByNickname(nick) ?: throw UserNotFoundException("Can't find user by nickname")
+    fun getUserByNickname(nick: String): User
+    {
+        val user: UserEntity? = userRepository.getUserByNickname(nick)
+        if (user != null) {
+            return user.let { convert.convertEntityToModel(it) }
+        }
+        else{
+            throw UserNotFoundException("Can't find user by nickname")
+        }
     }
 
-    fun getUserByEmail(email: String): UserModel {
-        return userRepository.getUserByEmail(email) ?: throw UserNotFoundException("Can't find user by email")
+    fun getUserByEmail(email: String): User
+    {
+        val user: UserEntity? = userRepository.getUserByEmail(email)
+        if (user != null) {
+            return user.let { convert.convertEntityToModel(it) }
+        }
+        else{
+            throw UserNotFoundException("Can't find user by email")
+        }
     }
 
     fun isUserWithEmailExists(email: String): Int {
@@ -33,18 +58,18 @@ class UserService(val userRepository: UserRepository) {
             throw UserNotFoundException("Can't find user")
     }
 
-    fun create(user: UserModel) {
+    fun create(user: User) {
         checkUserExists(user.email, user.nickname!!)
-        userRepository.save(user)
+        userRepository.save(user.let { convert.convertModelToEntity(it) })
     }
 
-    fun updateProfile(newUser: UserModel, id: String) {
+    fun updateProfile(newUser: User, id: String) {
         val currentUser = getUserById(id)
         val userWithEmailForReplace = userRepository.getUserByEmail(newUser.email)
 
         if (userWithEmailForReplace == null || currentUser.email == newUser.email) {
             newUser.id = id.toInt()
-            userRepository.save(newUser)
+            userRepository.save(newUser.let { convert.convertModelToEntity(it) })
 
         } else {
             throw UserAlreadyCreatedException(userWithEmailForReplace)

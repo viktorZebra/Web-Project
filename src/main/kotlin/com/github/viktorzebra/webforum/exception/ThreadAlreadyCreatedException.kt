@@ -1,5 +1,5 @@
 package com.github.viktorzebra.webforum.exception
 
-import com.github.viktorzebra.webforum.model.ThreadsModel
+import com.github.viktorzebra.webforum.model.entity.ThreadsEntity
 
-class ThreadAlreadyCreatedException(val existedThread: ThreadsModel) : RuntimeException()
+class ThreadAlreadyCreatedException(val existedThread: ThreadsEntity) : RuntimeException()
