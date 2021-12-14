@@ -29,4 +29,4 @@
 
 ##ER-диаграмма сущностей системы.
 
-![Alt text](src/main/resources/er.svg)
+![Alt text](src/main/resources/ER.svg)
